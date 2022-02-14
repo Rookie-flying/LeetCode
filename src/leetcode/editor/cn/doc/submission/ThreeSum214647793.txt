@@ -1,0 +1,21 @@
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        result = set()
+        nums.sort()
+        for i in range(len(nums)):
+            left = i+1
+            right = len(nums)-1
+            while(left<right):
+                temp_nums = nums[i]+nums[left]+nums[right]
+                if temp_nums == 0:
+                    result.add((nums[i],nums[left],nums[right]))
+                    left += 1
+                elif temp_nums > 0:
+                    right -= 1
+                elif temp_nums < 0:
+                    left += 1
+        
+        result = list(result)
+        return result
+# runtime:2348 ms
+# memory:16.7 MB

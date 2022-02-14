@@ -1,0 +1,41 @@
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        int len_s = s.length();
+        int len_p = p.length();
+
+        char[] s_arr = s.toCharArray();
+        char[] p_arr = p.toCharArray();
+
+        int[] s_fre = new int[26];
+        int[] p_fre = new int[26];
+
+        // 统计p的字符频次
+        for(char item : p_arr) {
+            p_fre[item - 'a'] += 1;
+        }
+
+        //滑动窗口
+        int left = 0;
+        int right = 0;
+
+        List<Integer> res = new ArrayList<>();
+        while(right < len_s) {
+            s_fre[s_arr[right] - 'a'] += 1;
+            // 如果right向右移动，长度等于 p_len，进行更新
+            while (right - left + 1 == len_p) {
+
+                if (Arrays.equals(s_fre, p_fre)) {
+                    res.add(left);
+                }
+                // 向左移动
+                s_fre[s_arr[left] - 'a'] -= 1;
+                left++;
+            }
+            right++;
+        }
+        return res;
+    }
+}
+
+//runtime:5 ms
+//memory:39.3 MB
