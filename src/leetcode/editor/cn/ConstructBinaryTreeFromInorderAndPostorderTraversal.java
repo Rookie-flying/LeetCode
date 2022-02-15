@@ -35,6 +35,8 @@
 
 package leetcode.editor.cn;
 
+import javax.swing.tree.TreeNode;
+
 public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
     public static void main(String[] args) {
         Solution solution = new ConstructBinaryTreeFromInorderAndPostorderTraversal().new Solution();
@@ -63,7 +65,37 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversal {
     class Solution {
         public TreeNode buildTree(int[] inorder, int[] postorder) {
 
+            return buildTree(inorder, postorder, 0, inorder.length - 1,
+                            0, postorder.length - 1);
+        }
 
+        public TreeNode buildTree(int[] inorder, int[] postorder,
+                                  int inLeft, int intRight,
+                                  int postLeft, int postRight) {
+
+            if (inLeft > intRight) {
+                return null;
+            }
+
+            if (inLeft == intRight) {
+                return new TreeNode(inorder[inLeft]);
+            }
+
+            int nodeValue = postorder[postRight];
+
+            int nodeIndex = 0;
+            for (int i = 0; i <inorder.length ; i++) {
+                if (nodeValue == inorder[i]) {
+                    nodeIndex = i;
+                    break;
+                }
+            }
+
+            TreeNode node = new TreeNode(nodeValue);
+
+            node.left = buildTree(inorder, postorder, inLeft, nodeIndex-1, postLeft, postRight - 1 - (intRight - nodeIndex));
+            node.right = buildTree(inorder, postorder, nodeIndex+1, intRight, postRight - (intRight - nodeIndex), postRight - 1);
+            return node;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
